@@ -10,15 +10,24 @@
 # gunicorn
 # gdown
 
+# flask
+# gunicorn
+# numpy==1.24.3
+# pandas
+# scikit-learn
+# opencv-python-headless==4.11.0.86
+# tensorflow-cpu==2.13.0
+# gdown
+# tqdm
+
 flask
 gunicorn
 numpy==1.24.3
 pandas
 scikit-learn
-opencv-python-headless==4.11.0.86
-tensorflow-cpu==2.13.0
-gdown
+opencv-python-headless
 tqdm
+gdown
 
 
 # flask
