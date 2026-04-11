@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COVID News</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="page-shell" data-title="COVID News">
+    {% include 'partials/navbar.html' %}
+
+    <main class="page-main">
+        <section class="glass-card section-panel reveal">
+            <span class="eyebrow" data-i18n="eyebrow">COVID Updates</span>
+            <h1 class="section-title" data-i18n="newsTitle">Latest Health And COVID News</h1>
+            <p class="section-copy" data-i18n="newsDesc">A cleaner news layout with faster scanning cards, bilingual labels, and a more modern reading experience.</p>
+        </section>
+
+        <section class="news-grid" style="margin-top: 24px;">
+            <article class="news-card-modern reveal">
+                <img src="{{ url_for('static', filename='images/covid1.jpg') }}" alt="COVID news">
+                <div>
+                    <h3 data-i18n="n1t">Global COVID-19 Death Toll Highlights Pandemic Severity</h3>
+                    <p data-i18n="n1d">The COVID-19 pandemic caused millions of deaths worldwide, showing how deeply it affected healthcare systems and public life. Vaccination reduced severe outcomes, but the impact of past waves is still remembered globally.</p>
+                </div>
+            </article>
+
+            <article class="news-card-modern reveal">
+                <img src="{{ url_for('static', filename='images/covid2.jpg') }}" alt="Omicron variants">
+                <div>
+                    <h3 data-i18n="n2t">Omicron Variants Raise New Concerns In India</h3>
+                    <p data-i18n="n2d">New Omicron sub-variants brought fresh monitoring efforts, with experts focusing on fast spread, hospital readiness, and protecting vulnerable groups through awareness and prevention.</p>
+                </div>
+            </article>
+
+            <article class="news-card-modern reveal">
+                <img src="{{ url_for('static', filename='images/covid3.jpg') }}" alt="Misinformation">
+                <div>
+                    <h3 data-i18n="n3t">Authorities Warn Against COVID-19 Misinformation</h3>
+                    <p data-i18n="n3d">Officials continue to remind people to rely on trusted sources like WHO and government guidance, because misinformation can create panic, confusion, and unsafe decisions.</p>
+                </div>
+            </article>
+
+            <article class="news-card-modern reveal">
+                <img src="{{ url_for('static', filename='images/covid5.jpg') }}" alt="Pneumonia awareness">
+                <div>
+                    <h3 data-i18n="n4t">Understanding The Difference Between Viral Fever And Pneumonia</h3>
+                    <p data-i18n="n4d">Doctors highlight that similar symptoms can hide very different conditions, so persistent fever, chest pain, or shortness of breath should not be ignored, especially in children.</p>
+                </div>
+            </article>
+
+            <article class="news-card-modern reveal">
+                <img src="{{ url_for('static', filename='images/covid6.jpg') }}" alt="Public safety">
+                <div>
+                    <h3 data-i18n="n5t">Public Safety Still Depends On Clear Guidance</h3>
+                    <p data-i18n="n5d">Simple habits like masks in risk settings, hygiene, and trustworthy updates still matter when communities want to reduce confusion and respond responsibly.</p>
+                </div>
+            </article>
+
+            <article class="news-card-modern reveal">
+                <img src="{{ url_for('static', filename='images/covid4.jpg') }}" alt="Vaccination">
+                <div>
+                    <h3 data-i18n="n6t">Vaccination Remains A Key Layer Of Protection</h3>
+                    <p data-i18n="n6d">Vaccines and booster programs remain important tools to lower severe illness, strengthen immunity, and support longer-term public health safety.</p>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    {% include 'chat_widget.html' %}
+    <footer class="footer" data-i18n="footer">© 2026 MediScan AI | Built by Tech Triangle</footer>
+
+    <script>
+        window.pageTranslations = {
+            en: {
+                brand: "MediScan AI",
+                navHome: "Home",
+                navAbout: "About",
+                navNews: "News",
+                navCamera: "Camera",
+                eyebrow: "COVID Updates",
+                newsTitle: "Latest Health And COVID News",
+                newsDesc: "A cleaner news layout with faster scanning cards, bilingual labels, and a more modern reading experience.",
+                n1t: "Global COVID-19 Death Toll Highlights Pandemic Severity",
+                n1d: "The COVID-19 pandemic caused millions of deaths worldwide, showing how deeply it affected healthcare systems and public life. Vaccination reduced severe outcomes, but the impact of past waves is still remembered globally.",
+                n2t: "Omicron Variants Raise New Concerns In India",
+                n2d: "New Omicron sub-variants brought fresh monitoring efforts, with experts focusing on fast spread, hospital readiness, and protecting vulnerable groups through awareness and prevention.",
+                n3t: "Authorities Warn Against COVID-19 Misinformation",
+                n3d: "Officials continue to remind people to rely on trusted sources like WHO and government guidance, because misinformation can create panic, confusion, and unsafe decisions.",
+                n4t: "Understanding The Difference Between Viral Fever And Pneumonia",
+                n4d: "Doctors highlight that similar symptoms can hide very different conditions, so persistent fever, chest pain, or shortness of breath should not be ignored, especially in children.",
+                n5t: "Public Safety Still Depends On Clear Guidance",
+                n5d: "Simple habits like masks in risk settings, hygiene, and trustworthy updates still matter when communities want to reduce confusion and respond responsibly.",
+                n6t: "Vaccination Remains A Key Layer Of Protection",
+                n6d: "Vaccines and booster programs remain important tools to lower severe illness, strengthen immunity, and support longer-term public health safety.",
+                footer: "© 2026 MediScan AI | Built by Tech Triangle"
+            },
+            hi: {
+                brand: "मेडीस्कैन एआई",
+                navHome: "होम",
+                navAbout: "हमारे बारे में",
+                navNews: "समाचार",
+                navCamera: "कैमरा",
+                eyebrow: "कोविड अपडेट्स",
+                newsTitle: "नवीनतम हेल्थ और कोविड समाचार",
+                newsDesc: "अब यह पेज साफ कार्ड लेआउट, बेहतर स्कैनिंग और हिंदी/अंग्रेज़ी सपोर्ट के साथ ज्यादा आधुनिक दिखता है।",
+                n1t: "वैश्विक COVID-19 मृत्यु दर ने महामारी की गंभीरता दिखाई",
+                n1d: "कोविड-19 महामारी ने दुनिया भर में लाखों लोगों की जान ली और स्वास्थ्य व्यवस्था पर गहरा प्रभाव डाला। टीकाकरण ने गंभीर मामलों को कम किया, लेकिन पिछली लहरों का असर अब भी याद किया जाता है।",
+                n2t: "भारत में ओमिक्रॉन वेरिएंट से नई चिंता",
+                n2d: "नए ओमिक्रॉन सब-वेरिएंट के कारण निगरानी बढ़ी, जिसमें तेज फैलाव, अस्पताल तैयारी और कमजोर लोगों की सुरक्षा पर ध्यान दिया गया।",
+                n3t: "अधिकारियों ने गलत जानकारी से बचने की चेतावनी दी",
+                n3d: "लोगों को WHO और सरकारी दिशानिर्देश जैसे भरोसेमंद स्रोतों पर भरोसा करने की सलाह दी जा रही है, क्योंकि गलत जानकारी डर और भ्रम बढ़ा सकती है।",
+                n4t: "वायरल बुखार और निमोनिया का अंतर समझना जरूरी",
+                n4d: "डॉक्टर बताते हैं कि समान लक्षण अलग बीमारियों की ओर इशारा कर सकते हैं, इसलिए लगातार बुखार, छाती दर्द या सांस फूलना नजरअंदाज नहीं करना चाहिए।",
+                n5t: "जन सुरक्षा अब भी साफ जानकारी पर निर्भर है",
+                n5d: "जोखिम वाली जगहों पर मास्क, साफ-सफाई और सही अपडेट आज भी जिम्मेदार प्रतिक्रिया और कम भ्रम के लिए जरूरी हैं।",
+                n6t: "टीकाकरण सुरक्षा की एक अहम परत बना हुआ है",
+                n6d: "वैक्सीन और बूस्टर गंभीर बीमारी कम करने, प्रतिरक्षा बढ़ाने और लंबे समय की सार्वजनिक स्वास्थ्य सुरक्षा में अहम भूमिका निभाते हैं।",
+                footer: "© 2026 मेडीस्कैन एआई | टेक ट्रायंगल द्वारा निर्मित"
+            }
+        };
+    </script>
+    <script src="{{ url_for('static', filename='site.js') }}"></script>
+</body>
+</html>

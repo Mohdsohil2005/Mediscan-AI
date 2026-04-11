@@ -1,0 +1,33 @@
+<header class="site-header">
+    <a href="{{ url_for('home') }}" class="brand" aria-label="MediScan AI home">
+        <span class="brand-mark"><i class="fa-solid fa-stethoscope"></i></span>
+        <span data-i18n="brand">MediScan AI</span>
+    </a>
+
+    <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+        aria-controls="siteNav"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+        <a href="{{ url_for('home') }}" class="{% if active_page == 'home' %}active{% endif %}" data-i18n="navHome">Home</a>
+        <a href="{{ url_for('about') }}" class="{% if active_page == 'about' %}active{% endif %}" data-i18n="navAbout">About</a>
+        <a href="{{ url_for('news') }}" class="{% if active_page == 'news' %}active{% endif %}" data-i18n="navNews">News</a>
+        <a href="{{ url_for('camera') }}" class="{% if active_page == 'camera' %}active{% endif %}" data-i18n="navCamera">Camera</a>
+        <div class="lang-toggle">
+            <label class="switch" for="langToggle">
+                <span class="sr-only">Language toggle</span>
+                <input type="checkbox" id="langToggle">
+                <span class="slider"></span>
+            </label>
+            <span id="langText">EN</span>
+        </div>
+    </nav>
+</header>

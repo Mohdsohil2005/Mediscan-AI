@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang or 'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="page-shell" data-title="Full Report" data-initial-lang="{{ current_lang or 'en' }}">
+    {% include 'partials/navbar.html' %}
+
+    <main class="page-main">
+        <section class="glass-card section-panel reveal">
+            <span class="eyebrow" data-i18n="eyebrow">Detailed Guidance</span>
+            <h1 class="section-title" data-i18n="title">Full Health Guidance Report</h1>
+            <p class="section-copy" data-i18n="desc">This page gives the user clearer next steps after the AI result, including care guidance, food suggestions, precautions, and when to contact a doctor.</p>
+
+            <div class="result-summary" style="margin-top: 28px;">
+                <div class="confidence-ring" style="--progress: {{ report.confidence_percent|int }};">
+                    <div>
+                        <strong>{{ report.confidence_percent }}%</strong>
+                        <span data-i18n="confidenceLabel">Confidence</span>
+                    </div>
+                </div>
+                <div class="result-metrics">
+                    <div class="metric-box">
+                        <small data-i18n="predictionLabel">Prediction</small>
+                        <strong id="reportPrediction">{{ report.display_label }}</strong>
+                    </div>
+                    <div class="metric-box">
+                        <small data-i18n="riskLabel">Risk Level</small>
+                        <strong id="reportRisk">{{ report.risk_level }}</strong>
+                    </div>
+                    <div class="metric-box">
+                        <small data-i18n="imageLabel">Image</small>
+                        <strong>{{ report.filename or 'N/A' }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card" style="margin-top: 24px;">
+                <h3 data-i18n="summaryTitle">Summary</h3>
+                <p id="reportSummary">{{ report.summary }}</p>
+            </div>
+        </section>
+
+        <section class="grid-2" style="margin-top: 24px;">
+            <div class="glass-card section-panel reveal">
+                <h2 data-i18n="nextTitle">What To Do Next</h2>
+                <div class="info-card" style="margin-top: 16px;">
+                    <ul id="nextSteps">
+                        {% for item in report.next_steps %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <h2 style="margin-top: 24px;" data-i18n="careTitle">Things To Take Care Of</h2>
+                <div class="info-card" style="margin-top: 16px;">
+                    <ul id="generalCare">
+                        {% for item in report.general_care %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="glass-card section-panel reveal">
+                <h2 data-i18n="foodTitle">What To Eat / Prefer</h2>
+                <div class="info-card" style="margin-top: 16px;">
+                    <ul id="eatMore">
+                        {% for item in report.eat_more %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <h2 style="margin-top: 24px;" data-i18n="avoidTitle">What To Avoid</h2>
+                <div class="info-card" style="margin-top: 16px;">
+                    <ul id="avoidItems">
+                        {% for item in report.avoid %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid-2" style="margin-top: 24px;">
+            <div class="glass-card section-panel reveal">
+                <h2 data-i18n="doctorTitle">When To See A Doctor</h2>
+                <div class="info-card" style="margin-top: 16px;">
+                    <ul id="doctorWhen">
+                        {% for item in report.doctor_when %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="glass-card section-panel reveal">
+                <h2 data-i18n="warningTitle">Emergency Warning Signs</h2>
+                <div class="info-card" style="margin-top: 16px;">
+                    <ul id="warningSigns">
+                        {% for item in report.warning_signs %}
+                        <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card section-panel reveal report-download-panel" style="margin-top: 24px;">
+            <h2 data-i18n="downloadTitle">Save This Report</h2>
+            <p class="section-copy" data-i18n="downloadDesc">You can open this guidance anytime or download it as a PDF for future reference.</p>
+            <div class="button-row">
+                <a href="{{ url_for('report_pdf', filename=report.filename, label=report.normalized_label, confidence=(report.confidence_percent / 100), lang=current_lang or 'en') }}" class="btn-solid" id="downloadPdfLink" data-i18n="downloadPdf" data-lang-link="true">Download PDF</a>
+                <a href="{{ url_for('home') }}" class="back-link" data-i18n="backHome">Back To Home</a>
+            </div>
+            <p class="footnote" data-i18n="disclaimer">{{ report.disclaimer }}</p>
+        </section>
+    </main>
+
+    {% include 'chat_widget.html' %}
+    <footer class="footer" data-i18n="footer">© 2026 MediScan AI | Built by Tech Triangle</footer>
+
+    <script>
+        window.pageTranslations = {
+            en: {
+                brand: "MediScan AI",
+                navHome: "Home",
+                navAbout: "About",
+                navNews: "News",
+                navCamera: "Camera",
+                eyebrow: "Detailed Guidance",
+                title: "Full Health Guidance Report",
+                desc: "This page gives the user clearer next steps after the AI result, including care guidance, food suggestions, precautions, and when to contact a doctor.",
+                confidenceLabel: "Confidence",
+                predictionLabel: "Prediction",
+                riskLabel: "Risk Level",
+                imageLabel: "Image",
+                summaryTitle: "Summary",
+                nextTitle: "What To Do Next",
+                careTitle: "Things To Take Care Of",
+                foodTitle: "What To Eat / Prefer",
+                avoidTitle: "What To Avoid",
+                doctorTitle: "When To See A Doctor",
+                warningTitle: "Emergency Warning Signs",
+                downloadTitle: "Save This Report",
+                downloadDesc: "You can open this guidance anytime or download it as a PDF for future reference.",
+                downloadPdf: "Download PDF",
+                backHome: "Back To Home",
+                disclaimer: "{{ report.disclaimer }}",
+                footer: "© 2026 MediScan AI | Built by Tech Triangle"
+            },
+            hi: {
+                brand: "मेडीस्कैन एआई",
+                navHome: "होम",
+                navAbout: "हमारे बारे में",
+                navNews: "समाचार",
+                navCamera: "कैमरा",
+                eyebrow: "विस्तृत मार्गदर्शन",
+                title: "पूरी हेल्थ गाइडेंस रिपोर्ट",
+                desc: "यह पेज एआई परिणाम के बाद यूज़र को अगले कदम, खाने-पीने की सलाह, सावधानियां और डॉक्टर के पास कब जाना है जैसी उपयोगी जानकारी देता है।",
+                confidenceLabel: "विश्वास",
+                predictionLabel: "अनुमान",
+                riskLabel: "जोखिम स्तर",
+                imageLabel: "इमेज",
+                summaryTitle: "सारांश",
+                nextTitle: "अब आगे क्या करें",
+                careTitle: "किन बातों का ध्यान रखें",
+                foodTitle: "क्या खाएं / क्या बेहतर है",
+                avoidTitle: "क्या अवॉइड करें",
+                doctorTitle: "डॉक्टर के पास कब जाएं",
+                warningTitle: "इमरजेंसी चेतावनी संकेत",
+                downloadTitle: "रिपोर्ट सेव करें",
+                downloadDesc: "आप इस गाइडेंस को बाद में भी देख सकते हैं या PDF के रूप में डाउनलोड कर सकते हैं।",
+                downloadPdf: "PDF डाउनलोड करें",
+                backHome: "होम पर वापस जाएं",
+                disclaimer: "{{ report.disclaimer }}",
+                footer: "© 2026 मेडीस्कैन एआई | टेक ट्रायंगल द्वारा निर्मित"
+            }
+        };
+
+        window.reportContent = {
+            en: {
+                prediction: "{{ report.display_label }}",
+                risk: "{{ report.risk_level }}",
+                summary: "{{ report.summary }}",
+                disclaimer: "{{ report.disclaimer }}",
+                nextSteps: {{ report.next_steps|tojson }},
+                generalCare: {{ report.general_care|tojson }},
+                eatMore: {{ report.eat_more|tojson }},
+                avoidItems: {{ report.avoid|tojson }},
+                doctorWhen: {{ report.doctor_when|tojson }},
+                warningSigns: {{ report.warning_signs|tojson }}
+            },
+            hi: {
+                prediction: "{{ report.display_label_hi }}",
+                risk: "{{ report.risk_level_hi }}",
+                summary: "{{ report.summary_hi }}",
+                disclaimer: "{{ report.disclaimer_hi }}",
+                nextSteps: {{ report.next_steps_hi|tojson }},
+                generalCare: {{ report.general_care_hi|tojson }},
+                eatMore: {{ report.eat_more_hi|tojson }},
+                avoidItems: {{ report.avoid_hi|tojson }},
+                doctorWhen: {{ report.doctor_when_hi|tojson }},
+                warningSigns: {{ report.warning_signs_hi|tojson }}
+            }
+        };
+
+        function renderList(id, items) {
+            const container = document.getElementById(id);
+            if (!container) return;
+            container.innerHTML = "";
+            items.forEach((item) => {
+                const li = document.createElement("li");
+                li.textContent = item;
+                container.appendChild(li);
+            });
+        }
+
+        window.applyPageLanguage = function (lang) {
+            const content = window.reportContent[lang] || window.reportContent.en;
+            const reportPrediction = document.getElementById("reportPrediction");
+            const reportRisk = document.getElementById("reportRisk");
+            const reportSummary = document.getElementById("reportSummary");
+            const disclaimerNode = document.querySelector(".footnote[data-i18n='disclaimer']");
+
+            if (reportPrediction) reportPrediction.textContent = content.prediction;
+            if (reportRisk) reportRisk.textContent = content.risk;
+            if (reportSummary) reportSummary.textContent = content.summary;
+            if (disclaimerNode) disclaimerNode.textContent = content.disclaimer;
+
+            renderList("nextSteps", content.nextSteps);
+            renderList("generalCare", content.generalCare);
+            renderList("eatMore", content.eatMore);
+            renderList("avoidItems", content.avoidItems);
+            renderList("doctorWhen", content.doctorWhen);
+            renderList("warningSigns", content.warningSigns);
+        };
+    </script>
+    <script src="{{ url_for('static', filename='site.js') }}"></script>
+</body>
+</html>

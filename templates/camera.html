@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="page-shell" data-title="Camera Capture">
+    {% include 'partials/navbar.html' %}
+
+    <main class="page-main">
+        <section class="camera-shell">
+            <div class="glass-card section-panel reveal">
+                <span class="eyebrow" data-i18n="eyebrow">Live Capture</span>
+                <h1 class="section-title" data-i18n="title">Capture A Chest X-Ray Style Image</h1>
+                <p class="section-copy" data-i18n="desc">Use your camera for a quick capture. For best results, keep the image clear, front-facing, and focused on the X-ray only.</p>
+                <div class="camera-actions">
+                    <button id="capture" class="btn-solid" type="button" data-i18n="capture" disabled>Capture ROI Scan</button>
+                    <a href="{{ url_for('home') }}" class="btn-outline" data-i18n="uploadInstead">Upload Instead</a>
+                </div>
+                <p class="footnote" id="cameraStatus" data-i18n="cameraReady">Camera is initializing. Please allow permission if prompted.</p>
+            </div>
+
+            <div class="camera-frame reveal">
+                <div class="camera-stage">
+                    <video id="camera" autoplay playsinline muted></video>
+                    <div class="scanner-overlay" aria-hidden="true">
+                        <div class="scanner-mask"></div>
+                        <div class="scanner-box" id="scannerBox">
+                            <div class="scanner-corners">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="scanner-copy">
+                            <div class="scanner-status" id="scannerStatusBadge" data-i18n="scannerWaiting">Searching for X-ray</div>
+                            <p class="scanner-guidance" id="scannerGuidance" data-i18n="guidancePrimary">Align X-ray inside the box</p>
+                            <div class="scanner-metrics">
+                                <div>
+                                    <small data-i18n="metricCoverage">ROI Fill</small>
+                                    <strong id="roiCoverageValue">0%</strong>
+                                </div>
+                                <div>
+                                    <small data-i18n="metricEdges">Edge Match</small>
+                                    <strong id="roiEdgeValue">0%</strong>
+                                </div>
+                                <div>
+                                    <small data-i18n="metricTone">X-ray Match</small>
+                                    <strong id="roiToneValue">0%</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <canvas id="canvas" hidden></canvas>
+    <canvas id="analysisCanvas" hidden></canvas>
+    {% include 'chat_widget.html' %}
+    <footer class="footer" data-i18n="footer">© 2026 MediScan AI | Built by Tech Triangle</footer>
+
+    <script>
+        window.pageTranslations = {
+            en: {
+                brand: "MediScan AI",
+                navHome: "Home",
+                navAbout: "About",
+                navNews: "News",
+                navCamera: "Camera",
+                eyebrow: "Live Capture",
+                title: "Capture A Chest X-Ray Style Image",
+                desc: "Use your camera for a quick capture. For best results, keep the image clear, front-facing, and focused on the X-ray only.",
+                capture: "Capture ROI Scan",
+                uploadInstead: "Upload Instead",
+                cameraReady: "Camera is initializing. Please allow permission if prompted.",
+                cameraDenied: "Camera access was blocked. Please allow permission or use image upload.",
+                cameraWaiting: "Searching for a chest X-ray inside the scan box.",
+                cameraNotReady: "Place the X-ray fully inside the scan box before capturing.",
+                cameraAligned: "X-ray aligned. Capturing only the scan box.",
+                cameraWorking: "Image captured. Processing your result...",
+                scannerWaiting: "Searching for X-ray",
+                scannerReady: "X-ray detected",
+                scannerWarning: "Adjust alignment",
+                guidancePrimary: "Align X-ray inside the box",
+                guidanceHold: "Hold steady and keep the X-ray filling most of the box.",
+                guidanceMoveCloser: "Move closer so the X-ray fills the highlighted area.",
+                guidanceReduceColor: "Reduce colorful background objects and glare around the X-ray.",
+                guidanceProcessing: "Cropping the highlighted region and sending it for analysis.",
+                metricCoverage: "ROI Fill",
+                metricEdges: "Edge Match",
+                metricTone: "X-ray Match",
+                footer: "© 2026 MediScan AI | Built by Tech Triangle"
+            },
+            hi: {
+                brand: "मेडिस्कैन एआई",
+                navHome: "होम",
+                navAbout: "हमारे बारे में",
+                navNews: "समाचार",
+                navCamera: "कैमरा",
+                eyebrow: "लाइव कैप्चर",
+                title: "चेस्ट एक्स-रे जैसी इमेज कैप्चर करें",
+                desc: "तेज कैप्चर के लिए कैमरा उपयोग करें। बेहतर परिणाम के लिए इमेज साफ, सामने से और केवल एक्स-रे पर फोकस होनी चाहिए।",
+                capture: "फोकस स्कैन कैप्चर करें",
+                uploadInstead: "अपलोड करें",
+                cameraReady: "कैमरा शुरू हो रहा है। यदि पूछा जाए तो अनुमति दें।",
+                cameraDenied: "कैमरा एक्सेस ब्लॉक हो गया। अनुमति दें या इमेज अपलोड करें।",
+                cameraWaiting: "स्कैन बॉक्स के अंदर चेस्ट एक्स-रे खोजा जा रहा है।",
+                cameraNotReady: "कैप्चर से पहले एक्स-रे को पूरी तरह स्कैन बॉक्स के अंदर रखें।",
+                cameraAligned: "एक्स-रे सही अलाइन है। केवल स्कैन बॉक्स का एरिया कैप्चर होगा।",
+                cameraWorking: "इमेज कैप्चर हो गई है। परिणाम प्रोसेस हो रहा है...",
+                scannerWaiting: "एक्स-रे खोजा जा रहा है",
+                scannerReady: "एक्स-रे मिल गया",
+                scannerWarning: "अलाइनमेंट ठीक करें",
+                guidancePrimary: "एक्स-रे को बॉक्स के अंदर अलाइन करें",
+                guidanceHold: "फोन स्थिर रखें और एक्स-रे से बॉक्स का अधिकांश हिस्सा भरें।",
+                guidanceMoveCloser: "थोड़ा पास लाएं ताकि एक्स-रे हाइलाइट एरिया भर दे।",
+                guidanceReduceColor: "एक्स-रे के आसपास रंगीन बैकग्राउंड और ग्लेयर कम करें।",
+                guidanceProcessing: "हाइलाइट किए गए एरिया को क्रॉप करके एनालिसिस के लिए भेजा जा रहा है।",
+                metricCoverage: "ROI Fill",
+                metricEdges: "Edge Match",
+                metricTone: "X-ray Match",
+                footer: "© 2026 मेडिस्कैन एआई | टेक ट्रायंगल द्वारा निर्मित"
+            }
+        };
+
+        const video = document.getElementById("camera");
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+        const analysisCanvas = document.getElementById("analysisCanvas");
+        const analysisContext = analysisCanvas.getContext("2d", { willReadFrequently: true });
+        const captureButton = document.getElementById("capture");
+        const cameraStatus = document.getElementById("cameraStatus");
+        const scannerBox = document.getElementById("scannerBox");
+        const scannerStatusBadge = document.getElementById("scannerStatusBadge");
+        const scannerGuidance = document.getElementById("scannerGuidance");
+        const roiCoverageValue = document.getElementById("roiCoverageValue");
+        const roiEdgeValue = document.getElementById("roiEdgeValue");
+        const roiToneValue = document.getElementById("roiToneValue");
+        const ROI = { left: 0.16, top: 0.12, width: 0.68, height: 0.76 };
+        let latestScanState = null;
+        let scanTimer = null;
+        let activeStream = null;
+
+        const getLang = () => localStorage.getItem("lang") || "en";
+        const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+        const getRoiRect = (width, height) => ({
+            x: Math.round(width * ROI.left),
+            y: Math.round(height * ROI.top),
+            w: Math.round(width * ROI.width),
+            h: Math.round(height * ROI.height)
+        });
+
+        const updateScannerUi = (state) => {
+            const lang = getLang();
+            const t = window.pageTranslations[lang];
+
+            roiCoverageValue.textContent = `${Math.round((state.coverage || 0) * 100)}%`;
+            roiEdgeValue.textContent = `${Math.round((state.edgeScore || 0) * 100)}%`;
+            roiToneValue.textContent = `${Math.round((state.toneScore || 0) * 100)}%`;
+
+            scannerBox.classList.remove("is-ready", "is-warning");
+            scannerStatusBadge.classList.remove("ready", "warning");
+
+            if (state.ready) {
+                scannerBox.classList.add("is-ready");
+                scannerStatusBadge.classList.add("ready");
+                scannerStatusBadge.textContent = t.scannerReady;
+                scannerGuidance.textContent = t.guidanceHold;
+                cameraStatus.textContent = t.cameraAligned;
+                captureButton.disabled = false;
+                return;
+            }
+
+            captureButton.disabled = true;
+            cameraStatus.textContent = t.cameraNotReady;
+
+            if (state.detected) {
+                scannerBox.classList.add("is-warning");
+                scannerStatusBadge.classList.add("warning");
+                scannerStatusBadge.textContent = t.scannerWarning;
+                scannerGuidance.textContent = state.colorIssue ? t.guidanceReduceColor : t.guidanceMoveCloser;
+                return;
+            }
+
+            scannerStatusBadge.textContent = t.scannerWaiting;
+            scannerGuidance.textContent = t.guidancePrimary;
+            cameraStatus.textContent = t.cameraWaiting;
+        };
+
+        const analyzeCurrentFrame = () => {
+            if (!video.videoWidth || !video.videoHeight || video.readyState < 2) {
+                return;
+            }
+
+            const sourceWidth = video.videoWidth;
+            const sourceHeight = video.videoHeight;
+            const analysisScale = Math.min(1, 360 / Math.max(sourceWidth, sourceHeight));
+            const analysisWidth = Math.max(Math.round(sourceWidth * analysisScale), 180);
+            const analysisHeight = Math.max(Math.round(sourceHeight * analysisScale), 180);
+            analysisCanvas.width = analysisWidth;
+            analysisCanvas.height = analysisHeight;
+            analysisContext.drawImage(video, 0, 0, analysisWidth, analysisHeight);
+
+            const { x, y, w, h } = getRoiRect(analysisWidth, analysisHeight);
+            const imageData = analysisContext.getImageData(x, y, w, h);
+            const pixels = imageData.data;
+            const pixelCount = Math.max(w * h, 1);
+            const grayscale = new Float32Array(pixelCount);
+            let totalGray = 0;
+            let totalGraySq = 0;
+            let colorDeviation = 0;
+            let filledPixels = 0;
+
+            for (let i = 0, p = 0; i < pixels.length; i += 4, p += 1) {
+                const r = pixels[i];
+                const g = pixels[i + 1];
+                const b = pixels[i + 2];
+                const gray = (0.299 * r) + (0.587 * g) + (0.114 * b);
+                grayscale[p] = gray;
+                totalGray += gray;
+                totalGraySq += gray * gray;
+                colorDeviation += Math.abs(r - g) + Math.abs(g - b) + Math.abs(r - b);
+                if (gray > 22 && gray < 238) {
+                    filledPixels += 1;
+                }
+            }
+
+            const meanGray = totalGray / pixelCount;
+            const variance = Math.max((totalGraySq / pixelCount) - (meanGray * meanGray), 0);
+            const contrast = Math.sqrt(variance);
+            const normalizedColor = colorDeviation / (pixelCount * 255 * 3);
+            const coverage = filledPixels / pixelCount;
+
+            let edgeHits = 0;
+            let borderHits = 0;
+            let contourMinX = w;
+            let contourMinY = h;
+            let contourMaxX = 0;
+            let contourMaxY = 0;
+            const edgeThreshold = Math.max(18, contrast * 0.55);
+
+            for (let row = 1; row < h - 1; row += 1) {
+                for (let col = 1; col < w - 1; col += 1) {
+                    const index = (row * w) + col;
+                    const gx = Math.abs(grayscale[index + 1] - grayscale[index - 1]);
+                    const gy = Math.abs(grayscale[index + w] - grayscale[index - w]);
+                    const magnitude = gx + gy;
+
+                    if (magnitude > edgeThreshold) {
+                        edgeHits += 1;
+                        contourMinX = Math.min(contourMinX, col);
+                        contourMinY = Math.min(contourMinY, row);
+                        contourMaxX = Math.max(contourMaxX, col);
+                        contourMaxY = Math.max(contourMaxY, row);
+
+                        if (
+                            col < w * 0.18 || col > w * 0.82 ||
+                            row < h * 0.18 || row > h * 0.82
+                        ) {
+                            borderHits += 1;
+                        }
+                    }
+                }
+            }
+
+            const edgeDensity = edgeHits / pixelCount;
+            const edgeScore = clamp(edgeDensity / 0.085, 0, 1);
+            const toneScore = clamp((1 - (normalizedColor / 0.16)) * 0.55 + clamp(contrast / 78, 0, 1) * 0.45, 0, 1);
+
+            let objectFill = 0;
+            let centered = false;
+            if (edgeHits > 0 && contourMaxX > contourMinX && contourMaxY > contourMinY) {
+                objectFill = ((contourMaxX - contourMinX) * (contourMaxY - contourMinY)) / pixelCount;
+                const objectCenterX = (contourMinX + contourMaxX) / 2;
+                const objectCenterY = (contourMinY + contourMaxY) / 2;
+                centered = Math.abs((objectCenterX / w) - 0.5) < 0.16 && Math.abs((objectCenterY / h) - 0.5) < 0.18;
+            }
+
+            const likelyGrayscale = normalizedColor < 0.14;
+            const likelyXray = likelyGrayscale && contrast > 24 && edgeDensity > 0.018;
+            const fillsBox = coverage > 0.62 && objectFill > 0.46;
+            const boundaryStrong = borderHits > Math.max(edgeHits * 0.16, pixelCount * 0.008);
+            const ready = likelyXray && fillsBox && centered && boundaryStrong;
+
+            latestScanState = {
+                detected: likelyXray,
+                ready,
+                colorIssue: !likelyGrayscale,
+                coverage,
+                edgeScore,
+                toneScore
+            };
+
+            updateScannerUi(latestScanState);
+        };
+
+        const normalizeGrayCrop = (cropCanvas, cropContext) => {
+            const imageData = cropContext.getImageData(0, 0, cropCanvas.width, cropCanvas.height);
+            const pixels = imageData.data;
+            const grayValues = new Uint8Array(cropCanvas.width * cropCanvas.height);
+            let min = 255;
+            let max = 0;
+
+            for (let i = 0, p = 0; i < pixels.length; i += 4, p += 1) {
+                const gray = Math.round((0.299 * pixels[i]) + (0.587 * pixels[i + 1]) + (0.114 * pixels[i + 2]));
+                grayValues[p] = gray;
+                min = Math.min(min, gray);
+                max = Math.max(max, gray);
+            }
+
+            const range = Math.max(max - min, 1);
+            for (let i = 0, p = 0; i < pixels.length; i += 4, p += 1) {
+                const normalized = clamp(Math.round(((grayValues[p] - min) / range) * 255), 0, 255);
+                pixels[i] = normalized;
+                pixels[i + 1] = normalized;
+                pixels[i + 2] = normalized;
+            }
+
+            cropContext.putImageData(imageData, 0, 0);
+        };
+
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: { ideal: "environment" },
+                width: { ideal: 1280 },
+                height: { ideal: 1280 }
+            },
+            audio: false
+        })
+            .then((stream) => {
+                activeStream = stream;
+                video.srcObject = stream;
+                cameraStatus.textContent = window.pageTranslations[getLang()].cameraReady;
+                video.addEventListener("loadedmetadata", () => {
+                    if (scanTimer) {
+                        clearInterval(scanTimer);
+                    }
+                    scanTimer = window.setInterval(analyzeCurrentFrame, 280);
+                }, { once: true });
+            })
+            .catch(() => {
+                const t = window.pageTranslations[getLang()];
+                cameraStatus.textContent = t.cameraDenied;
+                scannerStatusBadge.textContent = t.cameraDenied;
+                captureButton.disabled = true;
+            });
+
+        window.addEventListener("beforeunload", () => {
+            if (scanTimer) {
+                clearInterval(scanTimer);
+            }
+            if (activeStream) {
+                activeStream.getTracks().forEach((track) => track.stop());
+            }
+        });
+
+        captureButton.addEventListener("click", () => {
+            const t = window.pageTranslations[getLang()];
+            if (!latestScanState || !latestScanState.ready) {
+                captureButton.disabled = true;
+                captureButton.textContent = t.capture;
+                cameraStatus.textContent = t.cameraNotReady;
+                return;
+            }
+
+            captureButton.disabled = true;
+            captureButton.textContent = t.cameraWorking;
+            cameraStatus.textContent = t.cameraWorking;
+            scannerGuidance.textContent = t.guidanceProcessing;
+
+            canvas.width = video.videoWidth || 720;
+            canvas.height = video.videoHeight || 720;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const { x, y, w, h } = getRoiRect(canvas.width, canvas.height);
+            const cropCanvas = document.createElement("canvas");
+            cropCanvas.width = w;
+            cropCanvas.height = h;
+            const cropContext = cropCanvas.getContext("2d");
+            cropContext.drawImage(canvas, x, y, w, h, 0, 0, w, h);
+            normalizeGrayCrop(cropCanvas, cropContext);
+
+            cropCanvas.toBlob((blob) => {
+                if (!blob) {
+                    captureButton.disabled = false;
+                    captureButton.textContent = t.capture;
+                    cameraStatus.textContent = t.cameraNotReady;
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append("file", blob, "capture.jpg");
+
+                fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then((response) => response.text())
+                    .then((html) => {
+                        document.open();
+                        document.write(html);
+                        document.close();
+                    })
+                    .catch(() => {
+                        captureButton.disabled = false;
+                        captureButton.textContent = t.capture;
+                        cameraStatus.textContent = t.cameraNotReady;
+                    });
+            }, "image/jpeg", 0.92);
+        });
+
+        window.applyPageLanguage = (lang) => {
+            const t = window.pageTranslations[lang];
+            if (!latestScanState) {
+                cameraStatus.textContent = t.cameraReady;
+                scannerStatusBadge.textContent = t.scannerWaiting;
+                scannerGuidance.textContent = t.guidancePrimary;
+                return;
+            }
+            updateScannerUi(latestScanState);
+        };
+    </script>
+    <script src="{{ url_for('static', filename='site.js') }}"></script>
+</body>
+</html>

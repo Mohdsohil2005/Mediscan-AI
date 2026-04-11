@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classification Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="page-shell" data-title="Classification Result">
+    {% include 'partials/navbar.html' %}
+
+    <main class="page-main">
+        <section class="result-shell">
+            <div class="glass-card section-panel reveal result-preview">
+                <span class="eyebrow" data-i18n="eyebrow">Scan Preview</span>
+                <h1 class="section-title" data-i18n="title">Your Analysis Result</h1>
+                <p class="section-copy" data-i18n="desc">A more readable summary with confidence score, risk hint, and a cleaner result layout.</p>
+                {% if filename %}
+                <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded X-ray preview" style="margin-top: 22px;">
+                {% else %}
+                <div class="info-card" style="margin-top: 22px;">
+                    <p data-i18n="noImage">No image preview available.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="glass-card section-panel reveal">
+                {% if error_message %}
+                <span class="status-pill warn" data-i18n="invalidBadge">Invalid Image</span>
+                <div class="result-summary">
+                    <div class="confidence-ring" style="--progress: 22;">
+                        <div>
+                            <strong>!</strong>
+                            <span data-i18n="retry">Retry</span>
+                        </div>
+                    </div>
+                    <div class="result-metrics">
+                        <div class="metric-box">
+                            <small data-i18n="messageLabel">Message</small>
+                            <strong id="errorText">{{ error_message }}</strong>
+                        </div>
+                        <div class="metric-box">
+                            <small data-i18n="hintLabel">Hint</small>
+                            <strong data-i18n="invalidHint">Please use a chest X-ray image only.</strong>
+                        </div>
+                    </div>
+                </div>
+                <p class="footnote" data-i18n="invalidFootnote">Try a clear, front-facing chest X-ray image with minimal background objects for a better result.</p>
+                {% else %}
+                {% set confidence_percent = '%.2f' % (confidence_score * 100) %}
+                {% set is_covid = predicted_label == "COVID" %}
+                {% set is_normal = predicted_label == "NORMAL" %}
+                <span class="status-pill {% if is_uncertain %}neutral{% elif is_covid %}warn{% elif is_normal %}safe{% else %}neutral{% endif %}" id="riskBadge">
+                    {% if is_uncertain %}Review Needed{% elif is_covid %}High Risk{% elif is_normal %}Low Risk{% else %}Needs Attention{% endif %}
+                </span>
+                <div class="result-summary">
+                    <div class="confidence-ring" style="--progress: {{ '%.0f' % (confidence_score * 100) }};">
+                        <div>
+                            <strong>{{ confidence_percent }}%</strong>
+                            <span data-i18n="confidenceLabel">Confidence</span>
+                        </div>
+                    </div>
+                    <div class="result-metrics">
+                        <div class="metric-box">
+                            <small data-i18n="predictionLabel">Predicted Status</small>
+                            <strong id="predictedStatus">{{ predicted_label }}</strong>
+                        </div>
+                        <div class="metric-box">
+                            <small data-i18n="riskLabel">Risk Summary</small>
+                            <strong id="riskText">
+                                {% if is_uncertain %}Review Needed{% elif is_covid %}High Risk{% elif is_normal %}Low Risk{% else %}Needs Attention{% endif %}
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+                <p class="footnote" id="resultNote">
+                    {% if is_uncertain %}
+                    The model confidence is lower for this scan. Please try a clearer front-facing chest X-ray and confirm the result with a doctor.
+                    {% elif is_covid %}
+                    Please consult a doctor quickly and confirm with professional medical evaluation.
+                    {% elif is_normal %}
+                    The scan looks closer to a normal class, but a doctor should still make the final interpretation.
+                    {% else %}
+                    The scan suggests pneumonia-related findings may need medical review for confirmation.
+                    {% endif %}
+                </p>
+                {% endif %}
+
+                <div class="button-row">
+                    <a href="{{ url_for('home') }}" class="back-link" data-i18n="backHome">Back To Home</a>
+                    <a href="{{ url_for('camera') }}" class="btn-outline" data-i18n="tryCamera">Try Camera Again</a>
+                    {% if not error_message %}
+                    <a href="{{ url_for('report', filename=filename, label=predicted_label, confidence=confidence_score, lang='en') }}" class="btn-solid" data-i18n="viewReport" data-lang-link="true">View Full Report</a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include 'chat_widget.html' %}
+    <footer class="footer" data-i18n="footer">© 2026 MediScan AI | Built by Tech Triangle</footer>
+
+    <script>
+        window.pageTranslations = {
+            en: {
+                brand: "MediScan AI",
+                navHome: "Home",
+                navAbout: "About",
+                navNews: "News",
+                navCamera: "Camera",
+                eyebrow: "Scan Preview",
+                title: "Your Analysis Result",
+                desc: "A more readable summary with confidence score, risk hint, and a cleaner result layout.",
+                noImage: "No image preview available.",
+                invalidBadge: "Invalid Image",
+                retry: "Retry",
+                messageLabel: "Message",
+                hintLabel: "Hint",
+                invalidHint: "Please use a chest X-ray image only.",
+                invalidFootnote: "Try a clear, front-facing chest X-ray image with minimal background objects for a better result.",
+                confidenceLabel: "Confidence",
+                predictionLabel: "Predicted Status",
+                riskLabel: "Risk Summary",
+                backHome: "Back To Home",
+                tryCamera: "Try Camera Again",
+                viewReport: "View Full Report",
+                footer: "© 2026 MediScan AI | Built by Tech Triangle",
+                riskHigh: "High Risk",
+                riskLow: "Low Risk",
+                riskMid: "Needs Attention",
+                riskReview: "Review Needed",
+                noteHigh: "Please consult a doctor quickly and confirm with professional medical evaluation.",
+                noteLow: "The scan looks closer to a normal class, but a doctor should still make the final interpretation.",
+                noteMid: "The scan suggests pneumonia-related findings may need medical review for confirmation.",
+                noteReview: "The model confidence is lower for this scan. Please try a clearer front-facing chest X-ray and confirm the result with a doctor.",
+                labelCOVID: "COVID",
+                labelNORMAL: "NORMAL",
+                labelPNEUMONIA: "VIRAL PNEUMONIA",
+                invalidMessageFallback: "This image does not look like a valid chest X-ray. Please upload a proper X-ray image."
+            },
+            hi: {
+                brand: "मेडीस्कैन एआई",
+                navHome: "होम",
+                navAbout: "हमारे बारे में",
+                navNews: "समाचार",
+                navCamera: "कैमरा",
+                eyebrow: "स्कैन प्रीव्यू",
+                title: "आपका विश्लेषण परिणाम",
+                desc: "अब परिणाम पेज confidence score, risk hint और साफ layout के साथ ज्यादा आकर्षक है।",
+                noImage: "इमेज प्रीव्यू उपलब्ध नहीं है।",
+                invalidBadge: "गलत इमेज",
+                retry: "फिर से",
+                messageLabel: "संदेश",
+                hintLabel: "सुझाव",
+                invalidHint: "कृपया केवल चेस्ट एक्स-रे इमेज का उपयोग करें।",
+                invalidFootnote: "बेहतर परिणाम के लिए साफ, सामने से ली गई और कम background वाली चेस्ट एक्स-रे इमेज का उपयोग करें।",
+                confidenceLabel: "विश्वास",
+                predictionLabel: "अनुमानित स्थिति",
+                riskLabel: "जोखिम सारांश",
+                backHome: "होम पर वापस जाएं",
+                tryCamera: "कैमरा फिर से उपयोग करें",
+                viewReport: "पूरी रिपोर्ट देखें",
+                footer: "© 2026 मेडीस्कैन एआई | टेक ट्रायंगल द्वारा निर्मित",
+                riskHigh: "उच्च जोखिम",
+                riskLow: "कम जोखिम",
+                riskMid: "ध्यान आवश्यक",
+                riskReview: "डॉक्टर समीक्षा आवश्यक",
+                noteHigh: "कृपया जल्दी डॉक्टर से संपर्क करें और मेडिकल जांच से पुष्टि कराएं।",
+                noteLow: "स्कैन सामान्य वर्ग के करीब दिखता है, लेकिन अंतिम राय डॉक्टर की होनी चाहिए।",
+                noteMid: "स्कैन में निमोनिया से जुड़े संकेत हो सकते हैं, इसलिए डॉक्टर से समीक्षा कराएं।",
+                noteReview: "इस स्कैन पर मॉडल का confidence कम है। कृपया अधिक साफ front-facing chest X-ray दोबारा दें और डॉक्टर से पुष्टि कराएं।",
+                labelCOVID: "कोविड",
+                labelNORMAL: "सामान्य",
+                labelPNEUMONIA: "वायरल निमोनिया",
+                invalidMessageFallback: "यह इमेज वैध चेस्ट एक्स-रे जैसी नहीं लग रही है। कृपया सही एक्स-रे इमेज अपलोड करें।"
+            }
+        };
+
+        window.applyPageLanguage = function (lang) {
+            const predicted = document.getElementById("predictedStatus");
+            const riskText = document.getElementById("riskText");
+            const riskBadge = document.getElementById("riskBadge");
+            const note = document.getElementById("resultNote");
+            const errorText = document.getElementById("errorText");
+            const t = window.pageTranslations[lang];
+
+            if (predicted) {
+                const original = predicted.dataset.raw || predicted.textContent.trim();
+                const uncertain = predicted.dataset.uncertain === "true";
+                predicted.dataset.raw = original;
+                if (uncertain) {
+                    if (riskText) riskText.textContent = t.riskReview;
+                    if (riskBadge) riskBadge.textContent = t.riskReview;
+                    if (note) note.textContent = t.noteReview;
+                    if (original === "COVID") {
+                        predicted.textContent = t.labelCOVID;
+                    } else if (original === "NORMAL") {
+                        predicted.textContent = t.labelNORMAL;
+                    } else {
+                        predicted.textContent = t.labelPNEUMONIA;
+                    }
+                } else if (original === "COVID") {
+                    predicted.textContent = t.labelCOVID;
+                    if (riskText) riskText.textContent = t.riskHigh;
+                    if (riskBadge) riskBadge.textContent = t.riskHigh;
+                    if (note) note.textContent = t.noteHigh;
+                } else if (original === "NORMAL") {
+                    predicted.textContent = t.labelNORMAL;
+                    if (riskText) riskText.textContent = t.riskLow;
+                    if (riskBadge) riskBadge.textContent = t.riskLow;
+                    if (note) note.textContent = t.noteLow;
+                } else {
+                    predicted.textContent = t.labelPNEUMONIA;
+                    if (riskText) riskText.textContent = t.riskMid;
+                    if (riskBadge) riskBadge.textContent = t.riskMid;
+                    if (note) note.textContent = t.noteMid;
+                }
+            }
+
+            if (errorText && lang === "hi") {
+                errorText.dataset.raw = errorText.dataset.raw || errorText.textContent.trim();
+                errorText.textContent = t.invalidMessageFallback;
+            } else if (errorText && lang === "en" && errorText.dataset.raw) {
+                errorText.textContent = errorText.dataset.raw;
+            }
+        };
+    </script>
+    <script>
+        const predictedNode = document.getElementById("predictedStatus");
+        if (predictedNode) {
+            predictedNode.dataset.uncertain = "{{ 'true' if is_uncertain else 'false' }}";
+        }
+    </script>
+    <script src="{{ url_for('static', filename='site.js') }}"></script>
+</body>
+</html>

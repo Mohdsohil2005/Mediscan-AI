@@ -1,0 +1,29 @@
+<div class="chat-widget" id="chatWidget">
+    <button class="chat-toggle" id="chatToggle" type="button" aria-label="Open medical chatbot">
+        <span class="chat-toggle-icon">+</span>
+        <span class="chat-toggle-text">Medical Chat</span>
+    </button>
+
+    <div class="chat-panel" id="chatPanel" hidden>
+        <div class="chat-panel-header">
+            <div>
+                <h3>Medical Assistant</h3>
+                <p>Only medical questions are allowed</p>
+            </div>
+            <button class="chat-close" id="chatClose" type="button" aria-label="Close chat">x</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message bot">
+                Ask about symptoms, COVID, pneumonia, chest X-ray, fever, cough, medicines, or health topics.
+            </div>
+        </div>
+
+        <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask medical question..." maxlength="300">
+            <button id="chatSend" type="button">Send</button>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='chatbot.js') }}"></script>

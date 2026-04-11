@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - MediScan AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="page-shell" data-title="About - MediScan AI">
+    {% include 'partials/navbar.html' %}
+
+    <main class="page-main">
+        <section class="glass-card section-panel reveal">
+            <span class="eyebrow" data-i18n="eyebrow">About This Project</span>
+            <h1 class="section-title" data-i18n="aboutTitle">Smart X-Ray screening that feels simple, clear, and fast.</h1>
+            <p class="section-copy" data-i18n="aboutDesc">MediScan AI helps detect COVID-19, Viral Pneumonia, and Normal conditions from chest X-ray images using deep learning, so users can get a quick screening result with a cleaner workflow.</p>
+        </section>
+
+        <section class="grid-2" style="margin-top: 24px;">
+            <div class="glass-card section-panel reveal">
+                <h2 data-i18n="featureTitle">Core Features</h2>
+                <div class="card-grid" style="margin-top: 18px;">
+                    <article class="mini-card">
+                        <div>⚡</div>
+                        <h3 data-i18n="f1">Fast AI Detection</h3>
+                        <p data-i18n="f1d">Get a prediction in seconds with a focused upload flow.</p>
+                    </article>
+                    <article class="mini-card">
+                        <div>🎯</div>
+                        <h3 data-i18n="f2">High Accuracy Model</h3>
+                        <p data-i18n="f2d">CNN-based screening tuned for chest X-ray classification.</p>
+                    </article>
+                    <article class="mini-card">
+                        <div>📸</div>
+                        <h3 data-i18n="f3">Upload And Camera</h3>
+                        <p data-i18n="f3d">Choose an image file or capture a live photo quickly.</p>
+                    </article>
+                    <article class="mini-card">
+                        <div>🌐</div>
+                        <h3 data-i18n="f4">Bilingual Experience</h3>
+                        <p data-i18n="f4d">One Hindi/English toggle now works the same across pages.</p>
+                    </article>
+                </div>
+            </div>
+
+            <div class="glass-card section-panel reveal">
+                <h2 data-i18n="howTitle">How It Works</h2>
+                <div class="info-card" style="margin-top: 18px;">
+                    <h3 data-i18n="s1">1. Upload A Chest X-Ray</h3>
+                    <p data-i18n="s1d">Choose a chest X-ray image from your device or use the camera page.</p>
+                </div>
+                <div class="info-card" style="margin-top: 14px;">
+                    <h3 data-i18n="s2">2. AI Processes The Image</h3>
+                    <p data-i18n="s2d">The model validates and analyzes the image before generating a class prediction.</p>
+                </div>
+                <div class="info-card" style="margin-top: 14px;">
+                    <h3 data-i18n="s3">3. Review The Result</h3>
+                    <p data-i18n="s3d">You get a more readable result card with confidence score and guidance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card section-panel reveal" style="margin-top: 24px;">
+            <div class="stats-grid">
+                <div class="mini-card">
+                    <div>🎯</div>
+                    <h3>99%</h3>
+                    <p data-i18n="stat1">Accuracy</p>
+                </div>
+                <div class="mini-card">
+                    <div>⚡</div>
+                    <h3>&lt;2s</h3>
+                    <p data-i18n="stat2">Prediction Time</p>
+                </div>
+                <div class="mini-card">
+                    <div>🤖</div>
+                    <h3>AI</h3>
+                    <p data-i18n="stat3">Powered Screening</p>
+                </div>
+                <div class="mini-card">
+                    <div>👨‍💻</div>
+                    <h3 data-i18n="teamName">Tech Triangle</h3>
+                    <p data-i18n="stat4">Built With Care</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid-2" style="margin-top: 24px;">
+            <div class="glass-card section-panel reveal">
+                <h2 data-i18n="contactTitle">Get In Touch</h2>
+                <p class="section-copy" data-i18n="contactDesc">If you have feedback, ideas, or want to improve this healthcare project further, the team can keep iterating on it.</p>
+            </div>
+
+            <div class="glass-card section-panel reveal">
+                <h2 data-i18n="devTitle">Developed By</h2>
+                <p class="section-copy"><strong data-i18n="teamName">Tech Triangle</strong></p>
+                <p class="section-copy">Mohd Sohil, Harsh Singh, Harsh Kumar Agarwal</p>
+            </div>
+        </section>
+    </main>
+
+    {% include 'chat_widget.html' %}
+    <footer class="footer" data-i18n="footer">© 2026 MediScan AI | Built by Tech Triangle</footer>
+
+    <script>
+        window.pageTranslations = {
+            en: {
+                brand: "MediScan AI",
+                navHome: "Home",
+                navAbout: "About",
+                navNews: "News",
+                navCamera: "Camera",
+                eyebrow: "About This Project",
+                aboutTitle: "Smart X-Ray screening that feels simple, clear, and fast.",
+                aboutDesc: "MediScan AI helps detect COVID-19, Viral Pneumonia, and Normal conditions from chest X-ray images using deep learning, so users can get a quick screening result with a cleaner workflow.",
+                featureTitle: "Core Features",
+                f1: "Fast AI Detection",
+                f1d: "Get a prediction in seconds with a focused upload flow.",
+                f2: "High Accuracy Model",
+                f2d: "CNN-based screening tuned for chest X-ray classification.",
+                f3: "Upload And Camera",
+                f3d: "Choose an image file or capture a live photo quickly.",
+                f4: "Bilingual Experience",
+                f4d: "One Hindi/English toggle now works the same across pages.",
+                howTitle: "How It Works",
+                s1: "1. Upload A Chest X-Ray",
+                s1d: "Choose a chest X-ray image from your device or use the camera page.",
+                s2: "2. AI Processes The Image",
+                s2d: "The model validates and analyzes the image before generating a class prediction.",
+                s3: "3. Review The Result",
+                s3d: "You get a more readable result card with confidence score and guidance.",
+                stat1: "Accuracy",
+                stat2: "Prediction Time",
+                stat3: "Powered Screening",
+                stat4: "Built With Care",
+                contactTitle: "Get In Touch",
+                contactDesc: "If you have feedback, ideas, or want to improve this healthcare project further, the team can keep iterating on it.",
+                devTitle: "Developed By",
+                teamName: "Tech Triangle",
+                footer: "© 2026 MediScan AI | Built by Tech Triangle"
+            },
+            hi: {
+                brand: "मेडीस्कैन एआई",
+                navHome: "होम",
+                navAbout: "हमारे बारे में",
+                navNews: "समाचार",
+                navCamera: "कैमरा",
+                eyebrow: "इस प्रोजेक्ट के बारे में",
+                aboutTitle: "स्मार्ट एक्स-रे स्क्रीनिंग जो सरल, साफ और तेज महसूस हो।",
+                aboutDesc: "MediScan AI डीप लर्निंग की मदद से चेस्ट एक्स-रे इमेज से COVID-19, वायरल निमोनिया और सामान्य स्थिति की पहचान करने में मदद करता है, ताकि यूज़र को जल्दी और साफ रिजल्ट मिल सके।",
+                featureTitle: "मुख्य विशेषताएं",
+                f1: "तेज एआई जांच",
+                f1d: "फोकस्ड अपलोड फ्लो के साथ कुछ ही सेकंड में भविष्यवाणी पाएँ।",
+                f2: "उच्च सटीकता मॉडल",
+                f2d: "चेस्ट एक्स-रे वर्गीकरण के लिए ट्यून किया गया CNN मॉडल।",
+                f3: "अपलोड और कैमरा",
+                f3d: "इमेज फाइल चुनें या लाइव फोटो जल्दी कैप्चर करें।",
+                f4: "दो-भाषी अनुभव",
+                f4d: "एक ही हिंदी/अंग्रेज़ी टॉगल अब सभी पेज पर एक जैसा काम करता है।",
+                howTitle: "यह कैसे काम करता है",
+                s1: "1. चेस्ट एक्स-रे अपलोड करें",
+                s1d: "अपने डिवाइस से इमेज चुनें या कैमरा पेज का उपयोग करें।",
+                s2: "2. एआई इमेज प्रोसेस करता है",
+                s2d: "मॉडल इमेज को वैलिडेट और एनालाइज करने के बाद क्लास प्रेडिक्शन देता है।",
+                s3: "3. परिणाम देखें",
+                s3d: "आपको confidence score और guidance के साथ साफ result card मिलता है।",
+                stat1: "सटीकता",
+                stat2: "जांच समय",
+                stat3: "एआई स्क्रीनिंग",
+                stat4: "ध्यान से बनाया गया",
+                contactTitle: "संपर्क करें",
+                contactDesc: "अगर आपके पास feedback या improvement ideas हैं, तो टीम इस प्रोजेक्ट को और बेहतर बना सकती है।",
+                devTitle: "डेवलप किया गया द्वारा",
+                teamName: "टेक ट्रायंगल",
+                footer: "© 2026 मेडीस्कैन एआई | टेक ट्रायंगल द्वारा निर्मित"
+            }
+        };
+    </script>
+    <script src="{{ url_for('static', filename='site.js') }}"></script>
+</body>
+</html>

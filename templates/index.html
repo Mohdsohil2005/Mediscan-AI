@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediScan AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="page-shell" data-title="MediScan AI">
+    {% include 'partials/navbar.html' %}
+
+    <section class="hero" id="home">
+        <div class="hero-content reveal">
+            <div class="hero-badge" data-i18n="badge">AI-Powered Medical Detection</div>
+            <h1 data-i18n="heroTitle">COVID Chest X-Ray Detection</h1>
+            <p class="subtitle" data-i18n="heroDesc">AI-assisted chest X-ray analysis for COVID-19, Viral Pneumonia, and Normal screening support in seconds.</p>
+            <div class="hero-buttons">
+                <a href="#upload-section" class="btn-primary" data-i18n="btnStart">Get Started Now</a>
+                <a href="{{ url_for('about') }}" class="btn-secondary" data-i18n="btnLearn">Learn More</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">3-Class</div>
+                    <div class="stat-label" data-i18n="stat1">SCREENING</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">&lt;2s</div>
+                    <div class="stat-label" data-i18n="stat2">ANALYSIS TIME</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label" data-i18n="stat3">ANALYSES DONE</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="upload-section" id="upload-section">
+        <div class="upload-container reveal">
+            <h2 data-i18n="uploadTitle">Upload Your X-Ray</h2>
+            <p class="subtitle-text" data-i18n="uploadDesc">Drag and drop your chest X-ray image or click to browse. Non X-ray images will be rejected.</p>
+
+            <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data" id="uploadForm">
+                <div class="upload-area" id="dropZone">
+                    <span class="upload-icon">📸</span>
+                    <h3 data-i18n="uploadBox">Click or Drag to Upload</h3>
+                    <p data-i18n="format">Supported formats: JPG, PNG, JPEG (Max 10MB). Chest X-ray only.</p>
+                    <input type="file" name="file" id="fileInput" accept="image/*" required>
+                </div>
+
+                <div class="upload-buttons">
+                    <button type="submit" class="btn-upload" id="analyzeButton" data-i18n="analyze">Analyze X-Ray</button>
+                    <a href="{{ url_for('camera') }}" class="btn-camera" data-i18n="cam">Open Camera</a>
+                </div>
+            </form>
+
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h4 data-i18n="f1">Fast Analysis</h4>
+                    <p data-i18n="f1d">Get results in seconds</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <h4 data-i18n="f2">Better Screening</h4>
+                    <p data-i18n="f2d">Confidence-aware AI output</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h4 data-i18n="f3">Secure And Private</h4>
+                    <p data-i18n="f3d">Your data is protected</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📸</div>
+                    <h4 data-i18n="f4">Upload And Camera</h4>
+                    <p data-i18n="f4d">Upload images or capture live</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'chat_widget.html' %}
+    <footer class="footer" data-i18n="footer">© 2026 MediScan AI | Built by Tech Triangle</footer>
+
+    <script>
+        window.pageTranslations = {
+            en: {
+                brand: "MediScan AI",
+                navHome: "Home",
+                navAbout: "About",
+                navNews: "News",
+                navCamera: "Camera",
+                badge: "AI-Powered Medical Detection",
+                heroTitle: "COVID Chest X-Ray Detection",
+                heroDesc: "AI-assisted chest X-ray analysis for COVID-19, Viral Pneumonia, and Normal screening support in seconds.",
+                btnStart: "Get Started Now",
+                btnLearn: "Learn More",
+                uploadTitle: "Upload Your X-Ray",
+                uploadDesc: "Drag and drop your chest X-ray image or click to browse. Non X-ray images will be rejected.",
+                uploadBox: "Click or Drag to Upload",
+                analyze: "Analyze X-Ray",
+                cam: "Open Camera",
+                f1: "Fast Analysis",
+                f1d: "Get results in seconds",
+                f2: "Better Screening",
+                f2d: "Confidence-aware AI output",
+                f3: "Secure And Private",
+                f3d: "Your data is protected",
+                f4: "Upload And Camera",
+                f4d: "Upload images or capture live",
+                footer: "© 2026 MediScan AI | Built by Tech Triangle",
+                stat1: "SCREENING",
+                stat2: "ANALYSIS TIME",
+                stat3: "ANALYSES DONE",
+                format: "Supported formats: JPG, PNG, JPEG (Max 10MB). Chest X-ray only.",
+                processing: "Processing..."
+            },
+            hi: {
+                brand: "मेडीस्कैन एआई",
+                navHome: "होम",
+                navAbout: "हमारे बारे में",
+                navNews: "समाचार",
+                navCamera: "कैमरा",
+                badge: "एआई-संचालित मेडिकल डिटेक्शन",
+                heroTitle: "कोविड चेस्ट एक्स-रे डिटेक्शन",
+                heroDesc: "छाती के एक्स-रे से COVID-19, वायरल निमोनिया और सामान्य स्थिति के लिए तेज AI-assisted screening support।",
+                btnStart: "अभी शुरू करें",
+                btnLearn: "और जानें",
+                uploadTitle: "अपना एक्स-रे अपलोड करें",
+                uploadDesc: "चेस्ट एक्स-रे इमेज ड्रैग करें या चुनने के लिए क्लिक करें। एक्स-रे के अलावा दूसरी इमेज रिजेक्ट की जाएगी।",
+                uploadBox: "अपलोड करने के लिए क्लिक या ड्रैग करें",
+                analyze: "एक्स-रे जांचें",
+                cam: "कैमरा खोलें",
+                f1: "तेज विश्लेषण",
+                f1d: "कुछ ही सेकंड में परिणाम",
+                f2: "बेहतर स्क्रीनिंग",
+                f2d: "confidence-aware AI output",
+                f3: "सुरक्षित और निजी",
+                f3d: "आपका डेटा सुरक्षित है",
+                f4: "अपलोड और कैमरा",
+                f4d: "इमेज अपलोड करें या लाइव कैप्चर करें",
+                footer: "© 2026 मेडीस्कैन एआई | टेक ट्रायंगल द्वारा निर्मित",
+                stat1: "स्क्रीनिंग",
+                stat2: "विश्लेषण समय",
+                stat3: "कुल जांच",
+                format: "समर्थित फॉर्मेट: JPG, PNG, JPEG (अधिकतम 10MB). केवल चेस्ट एक्स-रे इमेज।",
+                processing: "प्रोसेस हो रहा है..."
+            }
+        };
+
+        const dropZone = document.getElementById("dropZone");
+        const fileInput = document.getElementById("fileInput");
+        const uploadForm = document.getElementById("uploadForm");
+        const analyzeButton = document.getElementById("analyzeButton");
+
+        dropZone.addEventListener("click", () => fileInput.click());
+        dropZone.addEventListener("dragover", (event) => {
+            event.preventDefault();
+            dropZone.classList.add("dragover");
+        });
+        dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+        dropZone.addEventListener("drop", (event) => {
+            event.preventDefault();
+            dropZone.classList.remove("dragover");
+            fileInput.files = event.dataTransfer.files;
+        });
+
+        uploadForm.addEventListener("submit", () => {
+            const lang = localStorage.getItem("lang") || "en";
+            analyzeButton.disabled = true;
+            analyzeButton.textContent = window.pageTranslations[lang].processing;
+        });
+    </script>
+    <script src="{{ url_for('static', filename='site.js') }}"></script>
+</body>
+</html>
