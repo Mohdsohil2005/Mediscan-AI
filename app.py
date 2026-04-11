@@ -7,7 +7,7 @@ import re
 from io import BytesIO
 from pathlib import Path
 from textwrap import wrap
-from tensorflow.keras.models import load_model
+# from tensorflow.keras.models import load_model
 from werkzeug.utils import secure_filename
 from uuid import uuid4
 from PIL import Image, ImageDraw, ImageFont
@@ -20,7 +20,7 @@ if not os.path.exists("models/CNN_Covid19_Xray_Version.h5"):
     url = "YOUR_GOOGLE_DRIVE_LINK"
     output = "models/CNN_Covid19_Xray_Version.h5"
     gdown.download(url, output, quiet=False)
-    
+
 
 try:
     import google.generativeai as genai
@@ -192,7 +192,7 @@ def render_page(template_name, active_page):
 app = Flask(__name__)
 
 # Load your pre-trained model and label encoder
-model = load_model('./models/CNN_Covid19_Xray_Version.h5')  # Replace with your model path
+# model = load_model('./models/CNN_Covid19_Xray_Version.h5')  # Replace with your model path
 le = pickle.load(open("./models/Label_encoder.pkl", 'rb'))  # Load the label encoder
 
 # Path to store uploaded images
