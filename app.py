@@ -13,6 +13,15 @@ from uuid import uuid4
 from PIL import Image, ImageDraw, ImageFont
 from ml_utils import build_tta_batch, extract_focus_roi, normalize_prediction_label, summarize_prediction
 
+import os
+
+if not os.path.exists("models/CNN_Covid19_Xray_Version.h5"):
+    import gdown
+    url = "YOUR_GOOGLE_DRIVE_LINK"
+    output = "models/CNN_Covid19_Xray_Version.h5"
+    gdown.download(url, output, quiet=False)
+    
+
 try:
     import google.generativeai as genai
 except ImportError:
