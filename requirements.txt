@@ -9,4 +9,3 @@ tqdm
 flask
 gunicorn
 gdown
-python-3.10.13
