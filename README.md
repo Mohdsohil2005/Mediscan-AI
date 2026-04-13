@@ -1,53 +1,64 @@
-# Building-a-COVID-19-Detection-System-Using-CNN-Deep-Learning | Flask-Camera-Based-X-Ray-App
 # 🩺 MediScan AI
 
-🚀 **MediScan AI** is an AI-powered web application that analyzes X-ray images using machine learning to detect possible medical conditions quickly and efficiently.
+### AI-Powered X-Ray Analysis System using Deep Learning
+
+**MediScan AI** is a smart healthcare web application that leverages **Convolutional Neural Networks (CNN)** to analyze chest X-ray images and detect potential medical conditions such as COVID-19.
+
+Designed with a clean UI and real-time processing, this project demonstrates the integration of **AI + Web Development + Computer Vision**.
 
 ---
 
-## 📌 Features
+## 🌟 Key Highlights
 
-* 📷 **X-ray Image Capture (Camera Support)**
-* 🤖 **AI-Based Disease Detection**
-* ⚡ **Fast & Optimized Prediction System**
-* 🎯 **ROI-Based Scanning (Focused Detection like QR Scanner)**
-* 🌐 **User-Friendly Web Interface**
-* 📱 **Mobile Responsive Design**
-* 🌙 **Dark Mode Support**
+* 🤖 Deep Learning-based X-ray classification (CNN Model)
+* 📷 Real-time image capture using camera
+* 🎯 ROI-based scanning for focused detection
+* ⚡ Fast and optimized prediction pipeline
+* 🌐 Fully responsive web interface
+* 🌙 Dark mode supported UI
+* ☁️ Deployed on cloud (Render)
 
 ---
 
-## 🧠 How It Works
+## 🧠 Working Pipeline
 
-1. User captures or uploads an X-ray image
-2. Image is processed (cropped, resized, optimized)
-3. AI model analyzes the image
-4. Result is displayed with prediction
+```text
+User Input (Camera / Upload)
+        ↓
+Image Preprocessing (Resize, Normalize)
+        ↓
+CNN Model Prediction
+        ↓
+Result Output (Prediction Display)
+```
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** HTML, CSS, JavaScript
-* **Backend:** Python (Flask)
-* **Machine Learning:** TensorFlow / Keras
-* **Image Processing:** OpenCV
+| Layer          | Technology Used          |
+| -------------- | ------------------------ |
+| Frontend       | HTML, CSS, JavaScript    |
+| Backend        | Flask (Python)           |
+| AI/ML Model    | TensorFlow / Keras (CNN) |
+| Image Handling | OpenCV                   |
+| Deployment     | Render                   |
 
 ---
 
 ## 📂 Project Structure
 
 ```
-covid_project/
+mediscan-ai/
 │
-├── app.py
-├── train_model.py
-├── ml_utils.py
-├── models/
-├── static/
-├── templates/
-├── uploads/
-├── requirements.txt
+├── app.py                # Main Flask application
+├── train_model.py       # Model training script
+├── ml_utils.py          # ML helper functions
+├── models/              # Trained model (ignored in Git)
+├── static/              # CSS, JS, Images
+├── templates/           # HTML templates
+├── uploads/             # User uploaded images
+├── requirements.txt     # Dependencies
 └── README.md
 ```
 
@@ -55,27 +66,27 @@ covid_project/
 
 ## ⚙️ Installation & Setup
 
-### 1️⃣ Clone the repository
+### 1️⃣ Clone Repository
 
 ```
 git clone https://github.com/your-username/mediscan-ai.git
 cd mediscan-ai
 ```
 
-### 2️⃣ Create virtual environment
+### 2️⃣ Create Virtual Environment
 
 ```
 python -m venv venv
 venv\Scripts\activate
 ```
 
-### 3️⃣ Install dependencies
+### 3️⃣ Install Dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Run the app
+### 4️⃣ Run Application
 
 ```
 python app.py
@@ -83,52 +94,50 @@ python app.py
 
 ---
 
-## 🌐 Usage
+## 🌐 Live Demo
 
-* Open browser → `http://127.0.0.1:5000/`
-* Capture or upload X-ray image
-* View AI prediction result instantly
-
----
-
-## ⚠️ Important Notes
-
-* This project is for **educational purposes only**
-* Not a replacement for professional medical diagnosis
+🔗 https://mediscan-ai-rla4.onrender.com/
 
 ---
 
 ## 📸 Screenshots
 
-*Add your UI screenshots here*
+> Add UI screenshots here (Home page, Upload page, Result page)
 
 ---
 
-## 🚀 Future Improvements
+## ⚠️ Disclaimer
 
-* 🔍 Better model accuracy
-* 📊 Detailed medical reports
-* ☁️ Cloud deployment
-* 🧾 PDF report generation
+This project is intended for **educational and demonstration purposes only**.
+It should **not be used as a substitute for professional medical diagnosis**.
 
 ---
 
-## 🤝 Contributing
+## 🚀 Future Enhancements
 
-Contributions are welcome! Feel free to fork this repo and submit a pull request.
+* 📊 Detailed medical report generation
+* 📄 PDF export functionality
+* 🔍 Multi-disease detection
+* ☁️ Model hosting via API (HuggingFace / AWS)
+* 🔐 User authentication system
 
 ---
 
-## 📧 Contact
+## 🤝 Contribution
+
+Contributions are welcome!
+Feel free to fork the repository and submit a pull request.
+
+---
+
+## 👨‍💻 Author
 
 **Mohd Sohil**
-📩 Email: [your-email@example.com](mailto:your-email@example.com)
-🌐 Portfolio: (Add your link)
+📩 Email:[sohil.jaipur25@gmail.com]
+🌐 Portfolio: https://www.linkedin.com/in/mohd-sohil-4a4b2a277
 
 ---
 
 ## ⭐ Support
 
-If you like this project, give it a ⭐ on GitHub!
-
----
+If you found this project helpful, consider giving it a ⭐ on GitHub!
