@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
 </head>
 <body class="page-shell" data-title="Full Report" data-initial-lang="{{ current_lang or 'en' }}">
     {% include 'partials/navbar.html' %}
@@ -190,24 +191,24 @@
                 risk: "{{ report.risk_level }}",
                 summary: "{{ report.summary }}",
                 disclaimer: "{{ report.disclaimer }}",
-                nextSteps: {{ report.next_steps|tojson }},
-                generalCare: {{ report.general_care|tojson }},
-                eatMore: {{ report.eat_more|tojson }},
-                avoidItems: {{ report.avoid|tojson }},
-                doctorWhen: {{ report.doctor_when|tojson }},
-                warningSigns: {{ report.warning_signs|tojson }}
+                nextSteps:" {{ report.next_steps|tojson }}",
+                generalCare: "{{ report.general_care|tojson }}",
+                eatMore: "{{ report.eat_more|tojson }}",
+                avoidItems: "{{ report.avoid|tojson }}",
+                doctorWhen: "{{ report.doctor_when|tojson }}",
+                warningSigns: "{{ report.warning_signs|tojson }}"
             },
             hi: {
                 prediction: "{{ report.display_label_hi }}",
                 risk: "{{ report.risk_level_hi }}",
                 summary: "{{ report.summary_hi }}",
                 disclaimer: "{{ report.disclaimer_hi }}",
-                nextSteps: {{ report.next_steps_hi|tojson }},
-                generalCare: {{ report.general_care_hi|tojson }},
-                eatMore: {{ report.eat_more_hi|tojson }},
-                avoidItems: {{ report.avoid_hi|tojson }},
-                doctorWhen: {{ report.doctor_when_hi|tojson }},
-                warningSigns: {{ report.warning_signs_hi|tojson }}
+                nextSteps: "{{ report.next_steps_hi|tojson }}",
+                generalCare: "{{ report.general_care_hi|tojson }}",
+                eatMore: "{{ report.eat_more_hi|tojson }}",
+                avoidItems: "{{ report.avoid_hi|tojson }}",
+                doctorWhen: "{{ report.doctor_when_hi|tojson }}",
+                warningSigns: "{{ report.warning_signs_hi|tojson }}"
             }
         };
 
