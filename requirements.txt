@@ -30,6 +30,7 @@ tqdm
 gdown
 Pillow
 tensorflow-cpu==2.13.0
+gdown
 
 
 # flask

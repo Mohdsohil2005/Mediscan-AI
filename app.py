@@ -13,13 +13,25 @@ from uuid import uuid4
 from PIL import Image, ImageDraw, ImageFont
 from ml_utils import build_tta_batch, extract_focus_roi, normalize_prediction_label, summarize_prediction
 
-import os
+model = None
 
-if not os.path.exists("models/CNN_Covid19_Xray_Version.h5"):
-    import gdown
-    url = "https://drive.google.com/drive/folders/12gdHm10xOp8oNqYyutfqD2ofkIcPgL2T?usp=drive_link"
-    output = "models/CNN_Covid19_Xray_Version.h5"
-    gdown.download(url, output, quiet=False)
+def get_model():
+    global model
+    if model is None:
+        import os
+
+        model_path = "models/CNN_Covid19_Xray_Version.h5"
+
+        # 👉 YAHAN ADD KARNA HAI 👇
+        if not os.path.exists(model_path):
+            import gdown
+            url = "https://drive.google.com/uc?id=1VVhHhGysIKk0zY2wzIwTME1zaITz3eQW"
+            gdown.download(url, model_path, quiet=False)
+
+        from tensorflow.keras.models import load_model
+        model = load_model(model_path)
+
+    return model
 
 
 try:
@@ -610,6 +622,7 @@ def generate_report_pdf(report, lang="en"):
     return pdf_bytes.getvalue()
 
 def process_image(image_path):
+    model = get_model() 
     image = cv2.imread(image_path)
     if image is None:
         raise ValueError(f"Image not found at path: {image_path}")
