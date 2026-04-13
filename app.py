@@ -749,8 +749,8 @@ def upload_file():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         try:
             file.save(file_path)
-            if not is_valid_xray(file_path):
-                return render_invalid_result(filename=filename)
+            # if not is_valid_xray(file_path):
+            #     return render_invalid_result(filename=filename)
             prediction = process_image(file_path)
             return render_template('result.html',
                                    image_path=file_path,
