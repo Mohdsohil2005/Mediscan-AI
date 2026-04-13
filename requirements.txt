@@ -29,6 +29,7 @@ opencv-python-headless
 tqdm
 gdown
 Pillow
+tensorflow-cpu==2.13.0
 
 
 # flask
