@@ -204,8 +204,16 @@ def render_page(template_name, active_page):
 app = Flask(__name__)
 
 # Load your pre-trained model and label encoder
-model = load_model('./models/CNN_Covid19_Xray_Version.h5')  # Replace with your model path
-le = pickle.load(open("./models/Label_encoder.pkl", 'rb'))  # Load the label encoder
+# model = load_model('./models/CNN_Covid19_Xray_Version.h5')  # Replace with your model path
+# le = pickle.load(open("./models/Label_encoder.pkl", 'rb'))  # Load the label encoder
+le = None
+
+def get_label_encoder():
+    global le
+    if le is None:
+        import pickle
+        le = pickle.load(open("./models/Label_encoder.pkl", 'rb'))
+    return le
 
 # Path to store uploaded images
 UPLOAD_FOLDER = 'uploads'
@@ -623,6 +631,7 @@ def generate_report_pdf(report, lang="en"):
 
 def process_image(image_path):
     model = get_model() 
+    le = get_label_encoder() 
     image = cv2.imread(image_path)
     if image is None:
         raise ValueError(f"Image not found at path: {image_path}")
